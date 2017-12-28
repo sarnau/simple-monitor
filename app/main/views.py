@@ -9,7 +9,7 @@ from ..models import Hosts
 @main.route('/', methods=['GET', 'POST'])
 def index():
 #    form = HostForm()
-    hosts = Hosts.query.order_by(Hosts.status.asc()).all()
+    hosts = Hosts.query.order_by(Hosts.status.asc()).order_by(Hosts.last_checked.asc()).all()
     if len(hosts) == 0:
         now = datetime.now().strftime('%m/%d/%Y %H:%M:%S')
         perc_up = 0

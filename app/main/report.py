@@ -33,6 +33,8 @@ def check_hosts():
     hosts = Hosts.query.all()
     for host in hosts:
         fqdn = host.fqdn
+        if '.' not in fqdn:
+            continue
         port = host.port
         if port is not None:
             return_name = fqdn + ':' + str(port)

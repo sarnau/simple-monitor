@@ -26,6 +26,9 @@ def create_app(config_name):
     
     bootstrap.init_app(app)
     db.init_app(app)
+
+    from mqtt import add_mqtt_listener
+    add_mqtt_listener(app)
     
     from .models import Hosts
     
