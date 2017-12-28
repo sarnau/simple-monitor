@@ -15,6 +15,7 @@
 	}).on('circle-animation-progress', function(event, progress, stepValue) {$(this).children('strong').text((stepValue * 100).toFixed(0) + '%');});
 	</script>
 	<script type="text/javascript" src="{{ url_for('static', filename='js/circlesize.js') }}"></script>
+{#
 	<script type="text/javascript" src="{{ url_for('static', filename='js/notifications.js') }}"></script>
 	<script>
 	noty({
@@ -30,6 +31,7 @@
       easing: 'swing'
     }
   });
+#}
 	</script>
 
 	<div class="table-title">
@@ -45,7 +47,11 @@
         <tbody class="table-hover">
             {% for h in hosts %}
                 <tr>
-                    <td onClick="window.open('{{ h.fqdn + ':' ~ h.port }}')"; class="text-left">
+                    <td
+                        {% if h.port != None %}
+                            onClick="window.open('{{ 'http://' + h.fqdn + ':' ~ h.port }}')";
+                        {% endif %}
+                        class="text-left">
                         {% if h.friendly_name != None %}
                             {{ h.friendly_name }}
                         {% elif h.port != None %}

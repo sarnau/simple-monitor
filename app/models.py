@@ -4,7 +4,7 @@ from . import db
 class Hosts(db.Model):
     __tablename__ = 'hosts'
     id = db.Column(db.Integer, primary_key=True)
-    fqdn = db.Column(db.String())
+    fqdn = db.Column(db.String(), unique=True)
     port = db.Column(db.Integer, default=None, nullable=True)
     friendly_name = db.Column(db.String())
     status = db.Column(db.Boolean, default=False)
