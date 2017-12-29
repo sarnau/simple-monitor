@@ -4,7 +4,7 @@
 Simple Device Monitor
 ===
 
-A python based web app to monitor tcp/icmp status to servers, network gear, or any other device that is pingable in a clean simple interface. 
+A python based web app to monitor tcp/icmp status to servers, network gear, or any other device that is pingable in a clean simple interface. It also supports MQTT listening to monitor if MQTT device transmit regularly.
 
 Original design and concept by circa10a can be found [here](https://github.com/circa10a/Device-Monitor-Dashboard).
 
@@ -13,7 +13,7 @@ Original design and concept by circa10a can be found [here](https://github.com/c
 - (recommended) setup a virtual environment with either python2.7 or 3.6
 - Install dependencies
 - Setup the database: `python manage.py setup`
-- Run the web server `gunicorn -c gunicorn_conf.py manage:app`
+- Run the web server `python manage.py runserver`
 - Server will be available on [hostname]:8000
 
 ## Docker setup
@@ -23,12 +23,9 @@ Original design and concept by circa10a can be found [here](https://github.com/c
 - Access the container at [hostname]:8000
 
 ## Managing the server:
-- Click the 'Add Device' button to add a new host
-  - If no port is specified, ICMP pings will be used
-  - If a friendly name is provided, the dashboard will display that. If no friendly name is provided, the dashboard will display the fqdn + the port or PING if no port provided. 
-- When adding a new device via the add device button, the device will be first be checked at that time. 
 - Failed devices will always be at the top. 
-- To delete or edit a device, click the manage devices link and click the host tabs. 
+- The last time a device was seen is shown in the "Last Seen" column.
+- To add, delete or edit a device, click the manage devices link and click the host tabs. 
 - Click run report to ping all devices right now.
 - If you would like auto reporting, set the 'run_report' script on a cron job. Alternatively, sending an empty POST request to [hostname]:8000/check-devices will poll all devices. 
 
