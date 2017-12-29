@@ -19,7 +19,7 @@ def check_host(host):
         test = ping_host(fqdn)
     else:
         test = check_sock(fqdn, port)
-    timestamp = datetime.now()
+    timestamp = datetime.utcnow()
     return test, timestamp
 
 
@@ -42,7 +42,7 @@ def check_hosts():
         else:
             return_name = fqdn
             test = ping_host(fqdn)
-        timestamp = datetime.now()
+        timestamp = datetime.utcnow()
         host.status = test
         host.last_checked = timestamp
         db.session.add(host)
