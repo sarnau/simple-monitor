@@ -35,7 +35,7 @@ def index():
 #        db.session.add(host)
 #        return redirect(url_for('main.index'))
     
-    return render_template('index.html', hosts=hosts, percent_up=perc_up, timestamp=now)#, form=form)
+    return render_template('index.html', hosts=hosts, percent_up=perc_up)#, timestamp=now, form=form)
 
 
 @main.route('/check-hosts', methods=['GET', 'POST'])
