@@ -7,7 +7,7 @@ from ..models import Hosts
 
 @main.route('/', methods=['GET', 'POST'])
 def index():
-    hosts = Hosts.query.order_by(Hosts.status.asc()).order_by(Hosts.last_checked.asc()).all()
+    hosts = Hosts.query.filter(Hosts.type != None).order_by(Hosts.status.asc()).order_by(Hosts.last_checked.asc()).all()
     if len(hosts) == 0:
         now = datetime.utcnow().strftime('%m/%d/%Y %H:%M:%S')
         perc_up = 0
