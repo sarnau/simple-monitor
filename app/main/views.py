@@ -9,14 +9,8 @@ from ..models import Hosts
 def index():
     hosts = Hosts.query.filter(Hosts.type != None).order_by(Hosts.status.asc()).order_by(Hosts.last_checked.asc()).all()
     if len(hosts) == 0:
-        now = datetime.utcnow().strftime('%m/%d/%Y %H:%M:%S')
         perc_up = 0
     else:
-        now = hosts[0].last_checked
-        if now is not None:
-            now = datetime.strftime(now, '%m/%d/%Y %H:%M:%S')
-        else:
-            now = datetime.utcnow().strftime('%m/%d/%Y %H:%M:%S')
         total_hosts = len(hosts)
         up_hosts = len(Hosts.query.filter_by(status=True).all())
         perc_up = up_hosts / float(total_hosts)
