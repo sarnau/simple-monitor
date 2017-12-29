@@ -32,13 +32,35 @@
   });
 	</script>
 #}
+    <script>
+         function timeSince(timeStamp) {
+            var now = new Date(),
+              secondsPast = (now.getTime() - timeStamp.getTime()) / 1000;
+            if(secondsPast < 60){
+              return parseInt(secondsPast) + 's';
+            }
+            if(secondsPast < 3600){
+              return parseInt(secondsPast/60) + 'm';
+            }
+            if(secondsPast <= 86400){
+              return parseInt(secondsPast/3600) + 'h';
+            }
+            if(secondsPast > 86400){
+                day = timeStamp.getDate();
+                month = timeStamp.toDateString().match(/ [a-zA-Z]*/)[0].replace(" ","");
+                year = timeStamp.getFullYear() == now.getFullYear() ? "" :  " "+timeStamp.getFullYear();
+                return day + " " + month + year;
+            }
+          }
+    </script>
 
 	<div class="table-title"></div>
     <table class="table-fill">
         <thead>
             <tr>
-                <th width="65%" class="text-left">Device</th>
-                <th width="35%" class="text-center">Status</th>
+                <th width="45%" class="text-left">Device</th>
+                <th width="10%" class="text-center">Status</th>
+                <th width="35%" class="text-center">Last Seen</th>
             </tr>
         </thead>
         <tbody class="table-hover">
@@ -63,6 +85,9 @@
                         {% else %}
                         <div class="led-green"></div>
                         {% endif %}
+                    </td>
+                    <td class="text-center">
+                        <div><script>document.write(timeSince(new Date("{{ h.last_checked }}".replace(" ","T"))))</script></div>
                     </td>
                 </tr>
             {% endfor %}
