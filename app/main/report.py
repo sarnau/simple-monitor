@@ -10,19 +10,6 @@ from .. import db
 from ..models import Hosts
 
 
-def check_host(host):
-    """
-    Function to check a specific host when one is added to the database.
-    """
-    fqdn, port = host
-    if port is None:
-        test = ping_host(fqdn)
-    else:
-        test = check_sock(fqdn, port)
-    timestamp = datetime.utcnow()
-    return test, timestamp
-
-
 def check_hosts():
     """
     Function to check all hosts
@@ -33,22 +20,23 @@ def check_hosts():
     hosts = Hosts.query.all()
     for host in hosts:
         fqdn = host.fqdn
-        if '.' not in fqdn:
-            continue
-        port = host.port
-        if port is not None:
+        if host.type == 'CONNECT':
+            port = host.port
+            if port is not None:
+                port = 80
             return_name = fqdn + ':' + str(port)
             test = check_sock(fqdn, port)
-        else:
+        elif host.type == 'PING':
             return_name = fqdn
             test = ping_host(fqdn)
+        else:
+            continue
         timestamp = datetime.utcnow()
         host.status = test
         host.last_checked = timestamp
         db.session.add(host)
         return_data[return_name] = test
     return return_data
-
 
 
 def ping_host(hostname):
