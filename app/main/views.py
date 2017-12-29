@@ -2,13 +2,11 @@ from datetime import datetime
 from flask import render_template, redirect, url_for, jsonify, request
 from . import main, report
 from .. import db
-#from .forms import HostForm
 from ..models import Hosts
 
 
 @main.route('/', methods=['GET', 'POST'])
 def index():
-#    form = HostForm()
     hosts = Hosts.query.order_by(Hosts.status.asc()).order_by(Hosts.last_checked.asc()).all()
     if len(hosts) == 0:
         now = datetime.utcnow().strftime('%m/%d/%Y %H:%M:%S')
@@ -23,20 +21,8 @@ def index():
         up_hosts = len(Hosts.query.filter_by(status=True).all())
         perc_up = up_hosts / float(total_hosts)
         perc_up = float("%.2f" % perc_up)
-#    if form.validate_on_submit():
-#        if len(form.port.data) == 0:
-#            port = None
-#        else:
-#            port = form.port.data
-#        host_data = (form.fqdn.data, port)
-#        status, timestamp = report.check_host(host_data)
-#        host = Hosts(fqdn=form.fqdn.data, port=port, friendly_name=form.friendly_name.data,
-#                     status=status, last_checked=timestamp)
-#        db.session.add(host)
-#        return redirect(url_for('main.index'))
     
-    return render_template('index.html', hosts=hosts, percent_up=perc_up)#, timestamp=now, form=form)
-
+    return render_template('index.html', hosts=hosts, percent_up=perc_up)
 
 @main.route('/check-hosts', methods=['GET', 'POST'])
 def check_hosts():
