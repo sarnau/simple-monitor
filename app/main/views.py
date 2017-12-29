@@ -13,9 +13,7 @@ def index():
     else:
         total_hosts = len(hosts)
         up_hosts = len(Hosts.query.filter_by(status=True).all())
-        perc_up = up_hosts / float(total_hosts)
-        perc_up = float("%.2f" % perc_up)
-    
+        perc_up = float("%.2f" % (up_hosts / float(total_hosts)))
     return render_template('index.html', hosts=hosts, percent_up=perc_up)
 
 @main.route('/check-hosts', methods=['GET', 'POST'])
