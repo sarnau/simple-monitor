@@ -21,7 +21,7 @@ def index():
             now = datetime.now().strftime('%m/%d/%Y %H:%M:%S')
         total_hosts = len(hosts)
         up_hosts = len(Hosts.query.filter_by(status=True).all())
-        perc_up = up_hosts / total_hosts
+        perc_up = up_hosts / float(total_hosts)
         perc_up = float("%.2f" % perc_up)
 #    if form.validate_on_submit():
 #        if len(form.port.data) == 0:
