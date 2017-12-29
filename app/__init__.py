@@ -17,6 +17,7 @@ class HostModelView(ModelView):
     can_export = True
     column_editable_list = ['fqdn', 'port', 'friendly_name']
     form_excluded_columns = ['status', 'last_checked']
+    page_size = 100  # the number of entries to display on the list view
 
 
 # Application factory for the flask application
