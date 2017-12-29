@@ -15,8 +15,16 @@ class HostModelView(ModelView):
     create_modal = True
     edit_modal = True
     can_export = True
-    column_editable_list = ['fqdn', 'port', 'friendly_name']
-    form_excluded_columns = ['status', 'last_checked']
+    form_choices = {
+        'type': [
+            ('PING', 'Ping'),
+            ('CONNECT', 'Connect'),
+            ('MQTT', 'MQTT')
+        ]
+    }
+    column_list = ['type','fqdn', 'port', 'friendly_name', 'idle_duration']
+    column_editable_list = ['type','fqdn', 'port', 'friendly_name', 'idle_duration']
+    form_excluded_columns = ['status', 'last_checked', 'parameter_string', 'parameter_value_string']
     page_size = 100  # the number of entries to display on the list view
 
 

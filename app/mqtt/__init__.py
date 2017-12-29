@@ -37,7 +37,7 @@ def on_message(client, app, msg):
             record.status = True
             record.last_checked = datetime.utcnow()
         else:       # otherwise create a new entry
-            host = Hosts(fqdn=topic, port=None, friendly_name=None, status=True, last_checked=datetime.utcnow())
+            host = Hosts(fqdn=topic, port=None, friendly_name=None, status=True, last_checked=datetime.utcnow(), type='MQTT', idle_duration=60)
             db.session.add(host)
         db.session.commit()
 

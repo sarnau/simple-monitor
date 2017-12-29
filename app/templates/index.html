@@ -76,7 +76,7 @@
                         {% elif h.port != None %}
                             {{ h.fqdn + ' port: ' ~ h.port }}
                         {% else %}
-                            {{ h.fqdn + ' PING' }}
+                            {{ h.fqdn + ' ' + h.type }}
                         {% endif %}
                     </td>
                     <td>
