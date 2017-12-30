@@ -14,17 +14,17 @@ from ...models import Hosts
 
 # The callback for when the client receives a CONNACK response from the server.
 def on_connect(client, app, flags, rc):
-    print("Connected with result code "+str(rc))
+    print("MQTT: Connected with result code "+str(rc))
 
     # Subscribing in on_connect() means that if we lose the connection and
     # reconnect then subscriptions will be renewed.
     client.subscribe("#")
 
 def on_disconnect(client, userdata, rc):
-    print("Disconnected with result code "+str(rc))
+    print("MQTT: Disconnected with result code "+str(rc))
 
 def printUnknowMessage(msg):
-    print('### '+str(datetime.utcnow())+" "+msg.topic+" "+str(msg.payload))
+    print('MQTT: ### '+str(datetime.utcnow())+" "+msg.topic+" "+str(msg.payload))
 
 def on_message(client, app, msg):
     topic = msg.topic
@@ -42,7 +42,7 @@ def on_message(client, app, msg):
         db.session.commit()
 
 def setup(app):
-    print 'Connecting to MQTT server...'
+    print 'Initializing MQTT...'
     mqttc = mqtt.Client(userdata=app)
     mqttc.on_connect = on_connect
     mqttc.on_disconnect = on_disconnect
