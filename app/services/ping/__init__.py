@@ -15,8 +15,7 @@ from apscheduler.schedulers.background import BackgroundScheduler
 
 
 def check_hosts():
-    hosts = Hosts.query.all()
-    for host in hosts:
+    for host in Hosts.query.all():
         fqdn = host.fqdn
         if host.type == 'CONNECT':
             port = host.port
