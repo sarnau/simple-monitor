@@ -19,8 +19,10 @@ def setup(app):
         print "Initializing service timer..."
 
         # init BackgroundScheduler job
-        def check_service_timeout():
+        def service_timer():
             with app.app_context():
+                ping.check_hosts()
+
                 for host in Hosts.query.all():
                     if host.last_checked + timedelta(minutes=host.idle_duration) < datetime.utcnow():
                         host.status = False
@@ -29,8 +31,8 @@ def setup(app):
                 db.session.commit()
 
         scheduler = BackgroundScheduler()
-        scheduler.add_job(check_service_timeout,'interval',minutes=1)
-        check_service_timeout()
+        scheduler.add_job(service_timer,'interval',minutes=1)
+        service_timer()
         scheduler.start()
 
         def goodbye():

@@ -10,9 +10,6 @@ from datetime import datetime
 from ... import db
 from ...models import Hosts
 
-# import BackgroundScheduler
-from apscheduler.schedulers.background import BackgroundScheduler
-
 
 def check_hosts():
     for host in Hosts.query.all():
@@ -21,7 +18,7 @@ def check_hosts():
             port = host.port
             if port is not None:
                 port = 80
-            test = check_sock(fqdn, port)
+            test = check_socket(fqdn, port)
         elif host.type == 'PING':
             test = ping_host(fqdn)
         else:
@@ -56,7 +53,7 @@ def ping_host(hostname):
     return is_up
 
 
-def check_sock(hostname, port):
+def check_socket(hostname, port):
     try:
         r = socket.create_connection((hostname, port), 2)
     except socket.error:
@@ -65,22 +62,4 @@ def check_sock(hostname, port):
         return True
 
 def setup(app):
-    if not app.debug or os.environ.get('WERKZEUG_RUN_MAIN') == 'true': # avoid launching the scheduler twice in debug
-        print "Initializing ping..."
-
-        # init BackgroundScheduler job
-        def update_hosts():
-            with app.app_context():
-                check_hosts()
-
-        scheduler = BackgroundScheduler()
-        scheduler.add_job(update_hosts,'interval',minutes=1)
-        scheduler.start()
-
-        def goodbye():
-            # shutdown if app occurs except 
-            print "Exiting ping..."
-            scheduler.shutdown()
-
-        import atexit
-        atexit.register(goodbye)
+    pass
