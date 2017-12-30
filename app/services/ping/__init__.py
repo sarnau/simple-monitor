@@ -66,7 +66,7 @@ def check_sock(hostname, port):
         return True
 
 def setup(app):
-    if not app.debug or os.environ.get('WERKZEUG_RUN_MAIN') == 'true':
+    if not app.debug or os.environ.get('WERKZEUG_RUN_MAIN') == 'true': # avoid launching the scheduler twice in debug
         print "Initializing ping..."
 
         # init BackgroundScheduler job

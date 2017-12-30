@@ -28,7 +28,7 @@ def printUnknowMessage(msg):
 
 def on_message(client, app, msg):
     topic = msg.topic
-    if topic.endswith('/json'):
+    if topic.endswith('/json'): # not necessary to store this in the database
         topic = topic[:-5]
     print(str(datetime.utcnow())+" "+topic+" "+str(msg.payload))
     with app.app_context():
