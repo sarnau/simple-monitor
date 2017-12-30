@@ -47,6 +47,6 @@ def add_mqtt_listener(app):
     mqttc.on_connect = on_connect
     mqttc.on_disconnect = on_disconnect
     mqttc.on_message = on_message
-    mqttc.username_pw_set('pi', 'raspberry')
-    mqttc.connect("hassio.local", 1883, 60)
+    mqttc.username_pw_set(app.config['MQTT_USERNAME'], app.config['MQTT_PASSWORD'])
+    mqttc.connect(app.config['MQTT_SERVER'], app.config['MQTT_PORT'], 60)
     mqttc.loop_start()

@@ -11,6 +11,10 @@ class Config:
     SQLALCHEMY_COMMIT_ON_TEARDOWN = True
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     
+    MQTT_USERNAME = 'pi'
+    MQTT_PASSWORD = 'raspberry'
+    MQTT_SERVER = 'hassio.local'
+    MQTT_PORT = 1883
 
     @staticmethod
     def init_app(app):
