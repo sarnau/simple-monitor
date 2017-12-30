@@ -5,7 +5,7 @@ from .. import db
 from ..models import Hosts
 
 
-@main.route('/', methods=['GET', 'POST'])
+@main.route('/', methods=['GET'])
 def index():
     hosts = Hosts.query.filter(Hosts.type != None).order_by(Hosts.status.asc()).order_by(Hosts.last_checked.asc()).all()
     if len(hosts) == 0:
