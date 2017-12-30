@@ -11,6 +11,18 @@ from flask_admin.contrib.sqla import ModelView
 
 from config import config
 
+import logging
+import sys
+
+root = logging.getLogger()
+root.setLevel(logging.DEBUG)
+ch = logging.StreamHandler(sys.stdout)
+ch.setLevel(logging.DEBUG)
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+ch.setFormatter(formatter)
+root.addHandler(ch)
+
+
 bootstrap = Bootstrap()
 db = SQLAlchemy()
 admin = Admin(name='Device Monitor', base_template='layout.html', template_mode='bootstrap3')
