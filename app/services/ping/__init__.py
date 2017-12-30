@@ -11,7 +11,7 @@ from ... import db
 from ...models import Hosts
 
 
-def check_hosts():
+def check_hosts(app):
     for host in Hosts.query.all():
         fqdn = host.fqdn
         if host.type == 'CONNECT':

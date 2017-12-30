@@ -24,7 +24,8 @@ class HostModelView(ModelView):
         'type': [
             ('PING', 'Ping'),
             ('CONNECT', 'Connect'),
-            ('MQTT', 'MQTT')
+            ('MQTT', 'MQTT'),
+            ('MAX', 'MAX!')
         ]
     }
     column_list = ['type', 'fqdn', 'port', 'friendly_name', 'idle_duration']

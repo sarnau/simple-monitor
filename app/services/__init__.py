@@ -3,6 +3,7 @@
 
 import mqtt
 import ping
+import elvmax
 
 # import BackgroundScheduler
 import os
@@ -14,6 +15,7 @@ from ..models import Hosts
 def setup(app):
     mqtt.setup(app)
     ping.setup(app)
+    elvmax.setup(app)
 
     if not app.debug or os.environ.get('WERKZEUG_RUN_MAIN') == 'true': # avoid launching the scheduler twice in debug
         print "Initializing service timer..."
@@ -21,14 +23,13 @@ def setup(app):
         # init BackgroundScheduler job
         def service_timer():
             with app.app_context():
-                ping.check_hosts()
+                ping.check_hosts(app)
+                elvmax.check_maxdevices(app)
 
                 # update the timeout status of all devices
                 for host in Hosts.query.all():
                     if host.last_checked + timedelta(minutes=host.idle_duration) < datetime.utcnow():
                         host.status = False
-                    else:
-                        host.status = True
                 db.session.commit()
 
         scheduler = BackgroundScheduler()

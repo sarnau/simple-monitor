@@ -17,6 +17,8 @@ class Config:
     MQTT_PASSWORD = 'raspberry'
     MQTT_SERVER = 'hassio.local'
     MQTT_PORT = 1883
+    
+    ELVMAX_SERVER = '192.168.178.33'
 
     @staticmethod
     def init_app(app):
