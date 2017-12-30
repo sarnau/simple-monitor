@@ -9,14 +9,11 @@ from datetime import datetime
 from ... import db
 from ...models import Hosts
 
+# import BackgroundScheduler
+from apscheduler.schedulers.background import BackgroundScheduler
+
 
 def check_hosts():
-    """
-    Function to check all hosts
-    
-    If host is up returns true, else will return false
-    """
-    return_data = {}
     hosts = Hosts.query.all()
     for host in hosts:
         fqdn = host.fqdn
@@ -24,10 +21,8 @@ def check_hosts():
             port = host.port
             if port is not None:
                 port = 80
-            return_name = fqdn + ':' + str(port)
             test = check_sock(fqdn, port)
         elif host.type == 'PING':
-            return_name = fqdn
             test = ping_host(fqdn)
         else:
             continue
@@ -35,8 +30,7 @@ def check_hosts():
         host.status = test
         host.last_checked = timestamp
         db.session.add(host)
-        return_data[return_name] = test
-    return return_data
+    db.session.commit()
 
 
 def ping_host(hostname):
@@ -70,6 +64,23 @@ def check_sock(hostname, port):
     if r:
         return True
 
+def setup(app):
+    if not app.debug or os.environ.get('WERKZEUG_RUN_MAIN') == 'true':
+        print "Initializing ping..."
 
-if __name__ == '__main__':
-    check_hosts()
+        # init BackgroundScheduler job
+        def update_hosts():
+            with app.app_context():
+                check_hosts()
+
+        scheduler = BackgroundScheduler()
+        scheduler.add_job(update_hosts,'interval',minutes=1)
+        scheduler.start()
+
+        def goodbye():
+            # shutdown if app occurs except 
+            print "Exiting ping..."
+            scheduler.shutdown()
+
+        import atexit
+        atexit.register(goodbye)

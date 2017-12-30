@@ -41,8 +41,8 @@ def on_message(client, app, msg):
             db.session.add(host)
         db.session.commit()
 
-def add_mqtt_listener(app):
-    print 'Connecting to MQTT server'
+def setup(app):
+    print 'Connecting to MQTT server...'
     mqttc = mqtt.Client(userdata=app)
     mqttc.on_connect = on_connect
     mqttc.on_disconnect = on_disconnect
@@ -50,3 +50,11 @@ def add_mqtt_listener(app):
     mqttc.username_pw_set(app.config['MQTT_USERNAME'], app.config['MQTT_PASSWORD'])
     mqttc.connect(app.config['MQTT_SERVER'], app.config['MQTT_PORT'], 60)
     mqttc.loop_start()
+
+    def goodbye():
+        # shutdown if app occurs except 
+        print "Exiting MQTT..."
+        mqttc.disconnect()
+
+    import atexit
+    atexit.register(goodbye)
