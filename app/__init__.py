@@ -50,8 +50,7 @@ def create_app(config_name):
     from .main import main as main_blueprint
     app.register_blueprint(main_blueprint)
 
-    from services import mqtt,ping
-    mqtt.setup(app)
-    ping.setup(app)
+    from services import setup
+    services.setup(app)
 
     return app
