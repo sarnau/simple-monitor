@@ -1,5 +1,7 @@
-from datetime import datetime
-from flask import render_template, redirect, url_for, jsonify, request
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+from flask import render_template
 from . import main
 from .. import db
 from ..models import Hosts
