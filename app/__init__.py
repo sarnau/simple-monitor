@@ -1,3 +1,8 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+import os
+
 from flask import Flask
 from flask_bootstrap import Bootstrap
 from flask_sqlalchemy import SQLAlchemy
@@ -6,7 +11,6 @@ from flask_admin.contrib.sqla import ModelView
 
 # import BackgroundScheduler
 from apscheduler.schedulers.background import BackgroundScheduler
-
 
 from config import config
 
@@ -40,9 +44,6 @@ def create_app(config_name):
     bootstrap.init_app(app)
     db.init_app(app)
 
-    from mqtt import add_mqtt_listener
-    add_mqtt_listener(app)
-    
     from .models import Hosts
     
     admin.init_app(app)
@@ -52,14 +53,15 @@ def create_app(config_name):
     from .main import main as main_blueprint
     app.register_blueprint(main_blueprint)
 
-    # init BackgroundScheduler job
-    from app.main import report
+    from services import mqtt,ping
+    mqtt.add_mqtt_listener(app)
 
+    # init BackgroundScheduler job
     def update_hosts():
         with app.app_context():
-            report.check_hosts()
+            ping.check_hosts()
 
-    if not app.debug:
+    if not app.debug or os.environ.get('WERKZEUG_RUN_MAIN') == 'true':
         scheduler = BackgroundScheduler()
         scheduler.add_job(update_hosts,'interval',minutes=1)
         scheduler.start()

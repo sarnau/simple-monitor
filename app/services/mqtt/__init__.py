@@ -8,8 +8,8 @@ import paho.mqtt.client as mqtt
 
 from datetime import datetime
 
-from .. import db
-from ..models import Hosts
+from ... import db
+from ...models import Hosts
 
 
 # The callback for when the client receives a CONNACK response from the server.

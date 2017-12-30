@@ -6,8 +6,8 @@ import platform
 import socket
 from datetime import datetime
 
-from .. import db
-from ..models import Hosts
+from ... import db
+from ...models import Hosts
 
 
 def check_hosts():
