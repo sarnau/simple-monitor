@@ -11,8 +11,10 @@
 		size: 150,
 		thickness: 10,
 		emptyFill: "#cc0000",
-		fill: { color: ["#00cc00"]}
-	}).on('circle-animation-progress', function(event, progress, stepValue) {$(this).children('strong').text((stepValue * 100).toFixed(0) + '%');});
+		fill: { color: ["#00cc00"]},
+		animation: false
+	});
+	$('#circle').children('strong').text(({{ percent_up }} * 100).toFixed(0) + '%');
 	</script>
 {#
 	<script type="text/javascript" src="{{ url_for('static', filename='js/notifications.js') }}"></script>
