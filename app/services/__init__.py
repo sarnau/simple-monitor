@@ -23,6 +23,7 @@ def setup(app):
             with app.app_context():
                 ping.check_hosts()
 
+                # update the timeout status of all devices
                 for host in Hosts.query.all():
                     if host.last_checked + timedelta(minutes=host.idle_duration) < datetime.utcnow():
                         host.status = False
@@ -42,4 +43,3 @@ def setup(app):
 
         import atexit
         atexit.register(goodbye)
-
