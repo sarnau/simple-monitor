@@ -10,34 +10,35 @@ from datetime import datetime
 from ... import db
 from ...models import Hosts
 
-serverIP = '192.168.178.33'
+serverIP = None
+minuteCounter = 1000
 
 def check_maxdevices(app):
     if not serverIP:
         return
 
-    while True:
-        try:
-            cube = MaxCube(MaxCubeConnection(serverIP, 62910))
-        except socket.timeout:
-            print "MAX: Timeout..."
-            continue
-        break
+    # only check every 15 minutes
+    global minuteCounter
+    minuteCounter = minuteCounter + 1
+    if minuteCounter > 15:
+        minuteCounter = 0
+    if minuteCounter != 0:
+        return
 
-    # for debugging only:
-    if not app:
-        for device in cube.devices:
-            print(device.linkStatusError, device.lowBattery, device.statusInitialized, device.errorStatus, device.name, device.actual_temperature)
+    try:
+        cube = MaxCube(MaxCubeConnection(serverIP, 62910))
+    except socket.timeout:
+        print "MAX: Timeout..."
         return
 
     with app.app_context():
         for device in cube.devices:
-#            print device.name,device.linkStatusError
-            record = Hosts.query.filter_by(fqdn=device.name).first()
             if device.linkStatusError != 0:
                 statusOk = False
             else:
                 statusOk = True
+
+            record = Hosts.query.filter_by(fqdn=device.name).first()
             if record:    # update if MAX! device already exists
                 record.status = statusOk
                 record.last_checked = datetime.utcnow()
@@ -49,6 +50,3 @@ def check_maxdevices(app):
 def setup(app):
     global serverIP
     serverIP = app.config['ELVMAX_SERVER']
-
-if __name__ == '__main__':
-    check_maxdevices(None)

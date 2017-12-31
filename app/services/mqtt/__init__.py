@@ -42,6 +42,8 @@ def on_message(client, app, msg):
         db.session.commit()
 
 def setup(app):
+    if not app.config['MQTT_SERVER']:
+        return
     print 'Initializing MQTT...'
     mqttc = mqtt.Client(userdata=app)
     mqttc.on_connect = on_connect
