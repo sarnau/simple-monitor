@@ -41,7 +41,7 @@ class HostModelView(ModelView):
     }
     column_list = ['type', 'fqdn', 'friendly_name', 'idle_duration']
     column_editable_list = ['type', 'fqdn', 'friendly_name', 'idle_duration']
-    form_excluded_columns = ['status', 'last_checked', 'parameter_string', 'parameter_value_string']
+    form_excluded_columns = ['status', 'last_checked']
     page_size = 100  # the number of entries to display on the list view
 
 
