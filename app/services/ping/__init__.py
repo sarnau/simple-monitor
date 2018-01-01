@@ -13,19 +13,16 @@ from ...models import Hosts
 
 def check_hosts(app):
     for host in Hosts.query.all():
-        fqdn = host.fqdn
-        if host.type == 'CONNECT':
-            port = host.port
-            if port is not None:
-                port = 80
-            test = check_socket(fqdn, port)
-        elif host.type == 'PING':
-            test = ping_host(fqdn)
-        else:
+        if host.type != 'PING':
             continue
-        timestamp = datetime.utcnow()
+        fqdn = host.fqdn
+        if ':' in fqdn: # a ':' denotes the difference between ping and connect
+            (fqdn,port) = fqdn.split(':')
+            test = check_socket(fqdn, int(port))
+        else:
+            test = ping_host(fqdn)
         host.status = test
-        host.last_checked = timestamp
+        host.last_checked = datetime.utcnow()
         db.session.add(host)
     db.session.commit()
 

@@ -69,14 +69,12 @@
             {% for h in hosts %}
                 <tr>
                     <td
-                        {% if h.type == 'CONNECT' %}
-                            onClick="window.open('{{ 'http://' + h.fqdn + ':' ~ h.port }}')";
+                        {% if h.type == 'PING' %}
+                            onClick="window.open('{{ 'http://' + h.fqdn }}')";
                         {% endif %}
                         class="text-left">
                         {% if h.friendly_name != None %}
                             {{ h.friendly_name }}
-                        {% elif h.port != None %}
-                            {{ h.fqdn + ' port: ' ~ h.port }}
                         {% else %}
                             {{ h.fqdn + ' ' + h.type }}
                         {% endif %}

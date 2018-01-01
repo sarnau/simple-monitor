@@ -43,7 +43,7 @@ def check_maxdevices(app):
                 record.status = statusOk
                 record.last_checked = datetime.utcnow()
             else:       # otherwise create a new entry
-                host = Hosts(fqdn=device.name, port=None, friendly_name=None, status=statusOk, last_checked=datetime.utcnow(), type='MAX', idle_duration=60)
+                host = Hosts(fqdn=device.name, friendly_name=None, status=statusOk, last_checked=datetime.utcnow(), type='MAX', idle_duration=60)
                 db.session.add(host)
         db.session.commit()
 
